@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id               Int       @id @default(autoincrement())
+  name             String
+  role             Role
+  assignedRequests Request[] @relation("AssignedRequests")
+}
+
+model Request {
+  id           Int           @id @default(autoincrement())
+  clientName   String
+  phone        String
+  address      String
+  problemText  String
+  status       RequestStatus @default(new)
+  assignedToId Int?
+  assignedTo   User?         @relation("AssignedRequests", fields: [assignedToId], references: [id])
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+enum Role {
+  dispatcher
+  master
+}
+
+enum RequestStatus {
+  new
+  assigned
+  in_progress
+  done
+  canceled
+}

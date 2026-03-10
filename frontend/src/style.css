@@ -1,0 +1,312 @@
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #1f2937;
+  background: #f3f4f6;
+  line-height: 1.5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  min-width: 320px;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.page {
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.page-section {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-header {
+  max-width: 1200px;
+  margin: 0 auto 24px;
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+}
+
+.app-title {
+  margin: 0 0 6px;
+  font-size: 28px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.narrow-card {
+  width: 100%;
+  max-width: 520px;
+}
+
+.user-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.user-card {
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  background: #f9fafb;
+  text-align: left;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.user-card:hover {
+  background: #eef2ff;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-grid label,
+.filter-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 11px 12px;
+  background: #ffffff;
+}
+
+.primary-button,
+.ghost-button,
+.danger-button {
+  border: none;
+  border-radius: 10px;
+  padding: 11px 14px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.primary-button {
+  background: #2563eb;
+  color: white;
+}
+
+.primary-button:hover {
+  background: #1d4ed8;
+}
+
+.ghost-button {
+  background: #eef2ff;
+  color: #111827;
+}
+
+.danger-button {
+  background: #ef4444;
+  color: white;
+}
+
+.small {
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.section-head {
+  margin-bottom: 16px;
+}
+
+.row-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gap-12 {
+  gap: 12px;
+}
+
+.muted {
+  color: #6b7280;
+}
+
+.error-text {
+  color: #b91c1c;
+  margin: 0 0 16px;
+}
+
+.success-text {
+  color: #047857;
+  margin: 0 0 16px;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.status-new {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status-assigned {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.status-in_progress {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.status-done {
+  background: #d1fae5;
+  color: #047857;
+}
+
+.status-canceled {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.requests-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.requests-table th,
+.requests-table td {
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 12px;
+  vertical-align: top;
+}
+
+.problem-col {
+  min-width: 240px;
+}
+
+.action-stack {
+  display: grid;
+  gap: 8px;
+  min-width: 180px;
+}
+
+.empty-cell,
+.empty-state {
+  text-align: center;
+  color: #6b7280;
+}
+
+.grid-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.request-card h3 {
+  margin: 0;
+}
+
+.request-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+  margin: 16px 0;
+}
+
+.request-meta dt {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.request-meta dd {
+  margin: 4px 0 0;
+}
+
+.card-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 16px;
+  }
+
+  .app-header,
+  .row-between {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-grid,
+  .request-meta {
+    grid-template-columns: 1fr;
+  }
+}
