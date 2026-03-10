@@ -1,184 +1,264 @@
-Веб-сервис «Заявки в ремонтную службу»
+# Repair Service App
 
-Тестовое задание для компании База Бизнеса.
+Тестовое задание для позиции **Vibe Code Developer**.
 
-Приложение предназначено для приёма и обработки заявок в ремонтную службу. Система позволяет диспетчеру создавать и распределять заявки между мастерами, а мастерам — брать заявки в работу и завершать их.
+Веб-приложение для управления заявками ремонтной службы.
 
-Технологии
+Система позволяет:
 
-Frontend
-Vue 3 (Composition API)
-Vite
-JavaScript
-Backend
-Node.js
-Express
-ORM
-Prisma
-База данных
-SQLite
-Контейнеризация
-Docker
-Docker Compose
+* диспетчеру создавать и распределять заявки
+* мастерам брать заявки в работу
+* завершать ремонт
 
-Роли пользователей
+---
+
+# Технологии
+
+### Frontend
+
+* Vue 3 (Composition API)
+* Vite
+* JavaScript
+
+### Backend
+
+* Node.js
+* Express
+
+### ORM
+
+* Prisma
+
+### База данных
+
+* SQLite
+
+### Контейнеризация
+
+* Docker
+* Docker Compose
+
+---
+
+# Архитектура приложения
+
+```
+Browser
+   │
+   │ http://localhost:5173
+   ▼
+Frontend (Vue + Vite)
+   │
+   │ HTTP API
+   ▼
+Backend (Node.js + Express)
+   │
+   │ Prisma ORM
+   ▼
+SQLite Database
+```
+
+---
+
+# Docker архитектура
+
+```
+Docker Network
+│
+├── frontend container
+│     └── Vue + Vite
+│
+└── backend container
+      ├── Node.js
+      ├── Express
+      ├── Prisma
+      └── SQLite
+```
+
+---
+
+# Роли пользователей
 
 В системе реализованы две роли.
 
-Диспетчер
+### Диспетчер
 
 Может:
-просматривать список заявок
-фильтровать заявки по статусу
-назначать мастеров
-отменять заявки
-создавать новые заявки
 
-Мастер
+* просматривать список заявок
+* фильтровать заявки по статусу
+* создавать новые заявки
+* назначать мастеров
+* отменять заявки
+
+### Мастер
 
 Может:
-видеть только назначенные ему заявки
-брать заявку в работу
-завершать заявку
 
-Статусы заявок
-Статус Описание
-new новая заявка
-assigned заявка назначена мастеру
-in_progress заявка в работе
-done заявка выполнена
-canceled заявка отменена
-Запуск проекта через Docker (рекомендуется)
-Требования
+* видеть назначенные ему заявки
+* брать заявку в работу
+* завершать заявку
 
-Необходимо установить:
+---
 
-Docker Desktop
+# Статусы заявок
 
-Docker Compose
+```
+new
+assigned
+in_progress
+done
+canceled
+```
 
-Запуск
+---
 
-В корне проекта выполнить:
+# API
 
-docker compose up --build -d
+| Метод | Endpoint               | Описание             |
+| ----- | ---------------------- | -------------------- |
+| GET   | /users                 | список пользователей |
+| GET   | /requests              | список заявок        |
+| POST  | /requests              | создать заявку       |
+| PATCH | /requests/:id/assign   | назначить мастера    |
+| PATCH | /requests/:id/take     | взять заявку         |
+| PATCH | /requests/:id/complete | завершить заявку     |
+| PATCH | /requests/:id/cancel   | отменить заявку      |
 
-После запуска приложение будет доступно:
+---
+
+# Запуск проекта через Docker
+
+### 1. Сборка контейнеров
+
+```
+docker compose build
+```
+
+### 2. Запуск приложения
+
+```
+docker compose up -d
+```
+
+### 3. Открыть приложение
 
 Frontend:
 
+```
 http://localhost:5173
+```
 
 Backend API:
 
+```
 http://localhost:3001
-Остановка проекта
-docker compose down
-Запуск проекта без Docker
+```
 
-1. Установка зависимостей
-   В корне проекта:
-   npm install
+---
 
-Далее backend:
-cd backend
-npm install
-
-2. Создание базы данных
-   cd backend
-   npx prisma migrate dev
-   npx prisma generate
-   npm run prisma:seed
-
-3. Запуск backend
-   cd backend
-   node src/server.js
-   Backend будет доступен:
-   http://localhost:3000
-
-4. Запуск frontend
-   Из папки frontend:
-   npm install
-   npm run dev
-   Frontend будет доступен:
-   http://localhost:5173
-   Тестовые пользователи
+# Тестовые пользователи
 
 Создаются автоматически сидом базы данных.
 
-id имя роль
-1 dispatcher dispatcher
-2 master1 master
-3 master2 master
-Проверка race condition
+| id | name       | role       |
+| -- | ---------- | ---------- |
+| 1  | dispatcher | dispatcher |
+| 2  | master1    | master     |
+| 3  | master2    | master     |
 
-Чтобы проверить защиту от параллельных запросов, нужно одновременно выполнить два запроса.
+---
 
-При запуске через Docker
+# Проверка race condition
 
-В двух терминалах:
+Чтобы проверить защиту от параллельных запросов:
 
+Откройте **два терминала** и выполните:
+
+```
 curl -X PATCH http://localhost:3001/requests/2/take -H "x-user-id: 2"
+```
 
 Ожидаемый результат:
 
-один запрос получает 200 OK
+```
+один запрос → 200 OK
+второй запрос → 409 Conflict
+```
 
-второй запрос получает 409 Conflict
+Это означает, что заявка **не может быть взята двумя мастерами одновременно**.
 
-Это означает, что заявка не может быть взята двумя мастерами одновременно.
+---
 
-Структура проекта
+# Структура проекта
+
+```
 repair-service
 │
-├── backend
-│ ├── prisma
-│ │ └── schema.prisma
-│ │
-│ ├── src
-│ │ ├── routes
-│ │ ├── lib
-│ │ ├── app.js
-│ │ └── server.js
-│ │
-│ ├── Dockerfile
-│ └── dev.db
+├ backend
+│  ├ prisma
+│  ├ src
+│  │  ├ routes
+│  │  ├ lib
+│  │  ├ app.js
+│  │  └ server.js
+│  └ Dockerfile
 │
-├── frontend
-│ ├── src
-│ │ ├── components
-│ │ ├── views
-│ │ └── api
-│ │
-│ └── Dockerfile
+├ frontend
+│  ├ src
+│  │  ├ components
+│  │  ├ views
+│  │  └ api
+│  └ Dockerfile
 │
-├── docker-compose.yml
-├── README.md
-├── DECISIONS.md
-└── PROMPTS.md
-Архитектура приложения
-Browser
-│
-│ http://localhost:5173
-▼
-Frontend (Vue + Vite)
-│
-│ HTTP API
-▼
-Backend (Node + Express)
-│
-│ Prisma ORM
-▼
-SQLite Database
+├ docker-compose.yml
+├ README.md
+├ DECISIONS.md
+└ PROMPTS.md
+```
 
-Docker используется для запуска frontend и backend в изолированных контейнерах и упрощения локального запуска проекта.
+---
 
-Примечание
+# Race condition защита
 
-Для защиты от race condition используется атомарное обновление записи через условный updateMany в базе данных.
+Для защиты используется **атомарное обновление записи** в базе данных.
 
-Это гарантирует, что только один мастер может перевести заявку из состояния:
+Пример логики:
 
+```
+updateMany
+where:
+  id = requestId
+  status = assigned
+```
+
+Если запись уже изменена другим запросом — обновление не произойдёт.
+
+Это гарантирует, что только **один мастер может перевести заявку из состояния**
+
+```
 assigned → in_progress
+```
 
-даже при одновременных запросах.
+даже при параллельных запросах.
+
+---
+
+# Docker
+
+Docker используется для:
+
+* изоляции frontend и backend
+* воспроизводимого запуска проекта
+* упрощения локальной разработки
+* запуска проекта одной командой
+
+```
+docker compose up
+```
+
+---
+
+# Автор
+
+Тестовое задание выполнено для компании **База Бизнеса**.
