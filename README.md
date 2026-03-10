@@ -262,3 +262,8 @@ docker compose up
 # Автор
 
 Тестовое задание выполнено для компании **База Бизнеса**.
+
+<img width="1876" height="964" alt="2026-03-10_21-44-36" src="https://github.com/user-attachments/assets/ab1dda9c-ec6a-4088-8d32-e34df77ec4eb" />
+<img width="1828" height="940" alt="2026-03-10_21-44-09" src="https://github.com/user-attachments/assets/51749938-ad5f-4c29-a9ad-9fe45d3d51de" />
+<img width="1824" height="944" alt="2026-03-10_21-43-20" src="https://github.com/user-attachments/assets/44acf604-15cc-40b6-bc87-8ede4743127c" />
+
